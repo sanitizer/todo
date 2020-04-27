@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  todo:
+    container_name: todo
+    build: .
+    links:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+    ports:
+      - 8080:8080
+    restart: on-failure
+    depends_on:
+      - postgres

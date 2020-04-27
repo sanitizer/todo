@@ -2,8 +2,10 @@ package dao
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/sanitizer/todo/model"
+	"os"
 	"time"
 )
 
@@ -58,9 +60,11 @@ const (
 func Connection() *sql.DB {
 	db, err := sql.Open(
 		"postgres",
-		"postgres://:postgres@localhost/postgres?sslmode=disable",
+		fmt.Sprintf(
+			"password=postgres host=%s dbname=postgres port=5432 sslmode=disable",
+			os.Getenv("DB_HOST"),
+		),
 	)
-
 	checkForErrorAndFail(err)
 
 	return db
@@ -190,8 +194,9 @@ func mapPojo(rows *sql.Rows) *model.Todo {
 }
 
 func query(query string, args ...interface{}) (*sql.Rows, error) {
-	statement, err := Connection().Prepare(query)
-
+	db := Connection()
+	defer db.Close()
+	statement, err := db.Prepare(query)
 	checkForErrorAndFail(err)
 
 	return statement.Query(args...)

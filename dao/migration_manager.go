@@ -9,6 +9,7 @@ import (
 
 func MigrateSchema() {
 	db := Connection()
+	defer db.Close()
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 
 	checkForErrorAndFail(err)
