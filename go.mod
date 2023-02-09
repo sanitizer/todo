@@ -3,7 +3,7 @@ module github.com/sanitizer/todo
 go 1.14
 
 require (
-	github.com/gin-gonic/gin v1.6.2
+	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-migrate/migrate/v4 v4.10.0
 	github.com/golang/protobuf v1.4.0 // indirect
 	github.com/lib/pq v1.4.0
